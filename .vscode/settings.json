@@ -13,6 +13,9 @@
       "source.organizeImports.biome": "always"
     }
   },
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": true
+  },
 	"typescript.preferences.importModuleSpecifier": "non-relative",
   "editor.tabSize": 2
 }

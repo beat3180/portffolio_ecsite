@@ -24,7 +24,12 @@
 	"linter": {
 		"enabled": true,
     "rules": {
-      "all": true
+      "recommended": true,
+      "correctness": {
+        "noUndeclaredVariables": "error",
+        "noUnusedVariables": "error",
+        "useHookAtTopLevel": "error"
+      }
     }
 	},
 	"javascript": {
