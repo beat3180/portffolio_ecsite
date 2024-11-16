@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FC } from 'react'
+import Button from '../../../components/elements/button'
 import type { TodoItemProps } from './../types'
-
 
 const TodoItem: FC<TodoItemProps> = ({ todo, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false)
@@ -32,49 +32,58 @@ const TodoItem: FC<TodoItemProps> = ({ todo, onUpdate, onDelete }) => {
   }
 
   return (
-    <li>
-      <input
-        type="checkbox"
-        checked={todo.completed}
-        onChange={handleToggleComplete}
-      />
-      {isEditing ? (
-        <>
+    <tr className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+      <td>
+        <input
+          type="checkbox"
+          checked={todo.completed}
+          onChange={handleToggleComplete}
+        />
+      </td>
+      <td>
+        {isEditing ? (
           <input
             type="text"
             value={editedTitle}
             onChange={(e) => setEditedTitle(e.target.value)}
-            placeholder="Title"
           />
+        ) : (
+          <span>{todo.title}</span>
+        )}
+      </td>
+      <td>
+        {isEditing ? (
           <input
             type="text"
             value={editedDescription}
             onChange={(e) => setEditedDescription(e.target.value)}
-            placeholder="Description"
           />
-          <button type="button" onClick={handleSave}>
-            Save
-          </button>
-          <button type="button" onClick={handleCancel}>
-            Cancel
-          </button>
-        </>
-      ) : (
-        <>
-          <span
-            style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-          >
-            {todo.title}
-          </span>
-          <button type="button" onClick={handleEdit}>
-            Edit
-          </button>
-        </>
-      )}
-      <button type="button" onClick={handleDelete}>
-        Delete
-      </button>
-    </li>
+        ) : (
+          <span>{todo.description}</span>
+        )}
+      </td>
+      <td>
+        {isEditing ? (
+          <>
+            <Button variant="primary" onClick={handleSave}>
+              保存
+            </Button>
+            <Button variant="secondary" onClick={handleCancel}>
+              キャンセル
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button variant="secondary" onClick={handleEdit}>
+              編集
+            </Button>
+            <Button variant="danger" onClick={handleDelete}>
+              削除
+            </Button>
+          </>
+        )}
+      </td>
+    </tr>
   )
 }
 

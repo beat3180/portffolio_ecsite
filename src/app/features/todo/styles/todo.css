@@ -1,0 +1,119 @@
+.todo-title {  /* タイトル用のスタイル */
+  text-align: center; /* 中央寄せ */
+  margin-bottom: 20px; /* 下マージン */
+  font-size: 2em; /* フォントサイズ (必要に応じて調整) */
+}
+
+.todo-page {
+    font-family: sans-serif;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.todo-page h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.todo-list-container {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.add-task-form {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+
+/* tableに最小幅を設定 (必要に応じて調整) */
+.todo-items table {
+    min-width: 400px; /* 最小幅を設定 */
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: auto; /* table-layoutをautoに */
+}
+
+.todo-items th, .todo-items td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center; /* 文字を中央寄せ */
+    width: auto;       /* セルの幅を内容に合わせて調整 */
+    white-space: nowrap; /* 折り返しを防ぐ */
+}
+
+
+.todo-item.completed {
+  opacity: 0.5;
+}
+
+.todo-items input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+
+}
+
+/* 編集モード時のinputの幅を調整 */
+.todo-item.editing input[type="text"] {
+    width: calc(100% - 10px); /* paddingとborderの分を引く */
+}
+
+.edit-form, .display-mode {
+    display: block; /* Changed to block for better layout in table cells */
+    /* other styles removed */
+}
+
+.todo-items th {
+    background-color: #f0f0f0;  /* ヘッダーの背景色 */
+}
+
+.todo-item.completed span {
+    text-decoration: line-through;
+}
+
+
+.edit-form {
+    display: flex;
+    gap: 5px;
+    flex: 1;
+}
+
+.display-mode {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+/* ボタンのスタイル (サイズを小さく、中央に配置) */
+.todo-item button {
+    padding: 5px 10px;
+    margin: 2px;
+    white-space: nowrap; /* ボタンテキストの折り返しを防ぐ */
+}
+
+
+/* 編集ボタンと削除ボタンを横並びにする */
+.todo-item .display-mode {
+    display: flex;
+    justify-content: center; /* ボタンを中央に配置 */
+    align-items: center;
+    gap: 5px;
+}
+
+/* 保存ボタンとキャンセルボタンを横並びにする */
+.todo-item .edit-form {
+    display: flex;
+    justify-content: center; /* ボタンを中央に配置 */
+    align-items: center;
+    gap: 5px;
+}

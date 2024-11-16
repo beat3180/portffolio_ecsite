@@ -1,0 +1,35 @@
+.button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.button-primary {
+  background-color: #0070f3; /* Primary blue */
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: #0056b3;
+}
+
+.button-secondary {
+  background-color: #eaeaea; /* Light gray */
+  color: #333;
+}
+
+.button-secondary:hover {
+  background-color: #d4d4d4;
+}
+
+.button-danger {
+  background-color: #ff4d4f; /* Red */
+  color: white;
+}
+
+.button-danger:hover {
+  background-color: #cc0000;
+}
