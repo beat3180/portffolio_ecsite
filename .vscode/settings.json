@@ -14,7 +14,7 @@
     }
   },
   "editor.codeActionsOnSave": {
-    "quickfix.biome": true
+    "quickfix.biome": "explicit"
   },
 	"typescript.preferences.importModuleSpecifier": "non-relative",
   "editor.tabSize": 2

@@ -1,80 +1,78 @@
-import { useState } from 'react'
 import type { FC } from 'react'
-import type { TodoItemProps } from './../types'
+import Button from '../../../components/elements/Button'
+import type { TodoItemProps } from '../types'
+import { useTodoItem } from '../hooks/useTodoItem'
 
-
-const TodoItem: FC<TodoItemProps> = ({ todo, onUpdate, onDelete }) => {
-  const [isEditing, setIsEditing] = useState(false)
-  const [editedTitle, setEditedTitle] = useState(todo.title)
-  const [editedDescription, setEditedDescription] = useState(todo.description)
-
-  const handleToggleComplete = () => {
-    onUpdate({ ...todo, completed: !todo.completed })
-  }
-
-  const handleEdit = () => {
-    setIsEditing(true)
-  }
-
-  const handleSave = () => {
-    onUpdate({ ...todo, title: editedTitle, description: editedDescription })
-    setIsEditing(false)
-  }
-
-  const handleCancel = () => {
-    setEditedTitle(todo.title)
-    setEditedDescription(todo.description)
-    setIsEditing(false)
-  }
-
-  const handleDelete = () => {
-    onDelete(todo.id)
-  }
+const TodoItem: FC<TodoItemProps> = ({ todo }) => {
+  const {
+    isEditing,
+    editedTitle,
+    setEditedTitle,
+    editedDescription,
+    setEditedDescription,
+    handleEdit,
+    handleSave,
+    handleCancel,
+    handleToggleComplete,
+    handleDelete,
+  } = useTodoItem(todo)
 
   return (
-    <li>
-      <input
-        type="checkbox"
-        checked={todo.completed}
-        onChange={handleToggleComplete}
-      />
-      {isEditing ? (
-        <>
+    <tr className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+      <td>
+        <input
+          type="checkbox"
+          checked={todo.completed}
+          onChange={handleToggleComplete}
+        />
+      </td>
+      <td>
+        {isEditing ? (
           <input
             type="text"
             value={editedTitle}
             onChange={(e) => setEditedTitle(e.target.value)}
-            placeholder="Title"
           />
+        ) : (
+          <span>{todo.title}</span>
+        )}
+      </td>
+      <td>
+        {isEditing ? (
           <input
             type="text"
             value={editedDescription}
             onChange={(e) => setEditedDescription(e.target.value)}
-            placeholder="Description"
           />
-          <button type="button" onClick={handleSave}>
-            Save
-          </button>
-          <button type="button" onClick={handleCancel}>
-            Cancel
-          </button>
-        </>
-      ) : (
-        <>
-          <span
-            style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-          >
-            {todo.title}
-          </span>
-          <button type="button" onClick={handleEdit}>
-            Edit
-          </button>
-        </>
-      )}
-      <button type="button" onClick={handleDelete}>
-        Delete
-      </button>
-    </li>
+        ) : (
+          <span>{todo.description}</span>
+        )}
+      </td>
+      <td>
+        {isEditing ? (
+          <>
+            <Button variant="primary" onClick={handleSave}>
+              保存
+            </Button>
+            <Button variant="secondary" onClick={handleCancel}>
+              キャンセル
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button variant="secondary" onClick={handleEdit}>
+              編集
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => todo.id && handleDelete(todo.id)}
+            >
+              削除
+            </Button>
+          </>
+        )}
+      </td>
+    </tr>
   )
 }
 
