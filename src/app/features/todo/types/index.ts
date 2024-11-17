@@ -1,3 +1,4 @@
+import type React from 'react'
 export interface Todo {
   id?: number
   title: string
@@ -5,15 +6,12 @@ export interface Todo {
   completed: boolean
 }
 
-export interface TodoItemProps {
-  todo: Todo
-  onUpdate: (updatedTodo: Todo) => void
-  onDelete: (id: number | undefined) => void
+export interface TodosContextProps {
+  todos: Todo[]
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
+  fetchTodos: () => Promise<void>
 }
 
-export interface TodoListProps {
-  todos: Todo[]
-  onCreate: (newTodo: Todo) => void
-  onUpdate: (updatedTodo: Todo) => void
-  onDelete: (id: number | undefined) => void
+export interface TodoItemProps {
+  todo: Todo
 }

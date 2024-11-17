@@ -1,28 +1,17 @@
-import { useState } from 'react'
-import Button from '../../../components/elements/button'
-import type { TodoListProps } from './../types'
+import Button from '../../../components/elements/Button'
 import TodoItem from './TodoItem'
+import { useTodoList } from '../hooks/useTodoList'
 
-export default function TodoList({
-  todos,
-  onCreate,
-  onUpdate,
-  onDelete,
-}: TodoListProps) {
-  const [newTitle, setNewTitle] = useState('')
-  const [newDescription, setNewDescription] = useState('')
 
-  const handleCreate = () => {
-    if (newTitle.trim() !== '' && newDescription.trim() !== '') {
-      onCreate({
-        title: newTitle,
-        description: newDescription,
-        completed: false,
-      })
-      setNewTitle('')
-      setNewDescription('')
-    }
-  }
+export default function TodoList() {
+  const {
+    todos,
+    newTitle,
+    newDescription,
+    setNewTitle,
+    setNewDescription,
+    handleCreate,
+  } = useTodoList()
 
   return (
     <div className="todo-list-container">
@@ -59,8 +48,6 @@ export default function TodoList({
               <TodoItem
                 key={todo.id}
                 todo={todo}
-                onUpdate={onUpdate}
-                onDelete={onDelete}
               />
             ))}
           </tbody>

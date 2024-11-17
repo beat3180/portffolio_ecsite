@@ -1,35 +1,21 @@
-import { useState } from 'react'
 import type { FC } from 'react'
-import Button from '../../../components/elements/button'
-import type { TodoItemProps } from './../types'
+import Button from '../../../components/elements/Button'
+import type { TodoItemProps } from '../types'
+import { useTodoItem } from '../hooks/useTodoItem'
 
-const TodoItem: FC<TodoItemProps> = ({ todo, onUpdate, onDelete }) => {
-  const [isEditing, setIsEditing] = useState(false)
-  const [editedTitle, setEditedTitle] = useState(todo.title)
-  const [editedDescription, setEditedDescription] = useState(todo.description)
-
-  const handleToggleComplete = () => {
-    onUpdate({ ...todo, completed: !todo.completed })
-  }
-
-  const handleEdit = () => {
-    setIsEditing(true)
-  }
-
-  const handleSave = () => {
-    onUpdate({ ...todo, title: editedTitle, description: editedDescription })
-    setIsEditing(false)
-  }
-
-  const handleCancel = () => {
-    setEditedTitle(todo.title)
-    setEditedDescription(todo.description)
-    setIsEditing(false)
-  }
-
-  const handleDelete = () => {
-    onDelete(todo.id)
-  }
+const TodoItem: FC<TodoItemProps> = ({ todo }) => {
+  const {
+    isEditing,
+    editedTitle,
+    setEditedTitle,
+    editedDescription,
+    setEditedDescription,
+    handleEdit,
+    handleSave,
+    handleCancel,
+    handleToggleComplete,
+    handleDelete,
+  } = useTodoItem(todo)
 
   return (
     <tr className={`todo-item ${todo.completed ? 'completed' : ''}`}>
@@ -77,7 +63,10 @@ const TodoItem: FC<TodoItemProps> = ({ todo, onUpdate, onDelete }) => {
             <Button variant="secondary" onClick={handleEdit}>
               編集
             </Button>
-            <Button variant="danger" onClick={handleDelete}>
+            <Button
+              variant="danger"
+              onClick={() => todo.id && handleDelete(todo.id)}
+            >
               削除
             </Button>
           </>
