@@ -1,7 +1,6 @@
 'use client'
 
-import { TodosProvider } from './context/TodosContext'
-import { useTodosContext } from './context/TodosContext'
+import { TodosProvider, useTodosContext } from './context/TodosContext'
 import TodoList from './components/TodoList'
 import './styles/todo.css'
 import Loading from '../../components/common/Loading'
