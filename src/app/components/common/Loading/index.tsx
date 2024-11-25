@@ -9,6 +9,7 @@ const Loading = () => {
         alt="Loading..."
         width={100}
         height={100}
+        priority
         style={{
           maxWidth: '200px',
           maxHeight: '200px',

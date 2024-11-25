@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { useTodosContext } from '../context/TodosContext'
 import * as todoService from '../api/todoService'
 import type { Todo } from '../types'
+import { useErrorContext } from '../../../context/ErrorContext'
 
 export const useTodoItem = (initialTodo: Todo) => {
+  const { handleError } = useErrorContext()
   const { todos, setTodos } = useTodosContext()
 
   // ローカル状態管理
@@ -16,24 +18,32 @@ export const useTodoItem = (initialTodo: Todo) => {
   // 更新処理
   const handleUpdate = async (updatedTodo: Todo) => {
     try {
-      await todoService.updateTodo(updatedTodo)
-      setTodos((prevTodos) =>
-        prevTodos.map((todo) =>
-          todo.id === updatedTodo.id ? updatedTodo : todo,
-        ),
-      )
+      const success = await todoService.updateTodo(updatedTodo)
+      if (success) {
+        setTodos((prevTodos) =>
+          prevTodos.map((todo) =>
+            todo.id === updatedTodo.id ? updatedTodo : todo
+          )
+        )
+      } else {
+        handleError(new Error('Todoの更新に失敗しました。'), 'Todoの更新')
+      }
     } catch (error) {
-      console.error('Error updating todo:', error)
+      handleError(error, 'Todoの更新')
     }
   }
 
   // 削除処理
   const handleDelete = async (id: number) => {
     try {
-      await todoService.deleteTodo(id)
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
+      const success = await todoService.deleteTodo(id)
+      if (success) {
+        setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
+      } else {
+        handleError(new Error('Todoの削除に失敗しました。'), 'Todoの削除')
+      }
     } catch (error) {
-      console.error('Error deleting todo:', error)
+      handleError(error, 'Todoの削除')
     }
   }
 
@@ -77,46 +87,3 @@ export const useTodoItem = (initialTodo: Todo) => {
     handleToggleComplete,
   }
 }
-
-
-
-// export const useTodoItem = (
-//   initialTodo: Todo,
-//   onUpdate: (updatedTodo: Todo) => void,
-// ) => {
-//   const [isEditing, setIsEditing] = useState(false)
-//   const [editedTitle, setEditedTitle] = useState(initialTodo.title)
-//   const [editedDescription, setEditedDescription] = useState(
-//     initialTodo.description,
-//   )
-
-//   const handleEdit = () => {
-//     setIsEditing(true)
-//   }
-
-//   const handleSave = () => {
-//     onUpdate({
-//       ...initialTodo,
-//       title: editedTitle,
-//       description: editedDescription,
-//     })
-//     setIsEditing(false)
-//   }
-
-//   const handleCancel = () => {
-//     setEditedTitle(initialTodo.title)
-//     setEditedDescription(initialTodo.description)
-//     setIsEditing(false)
-//   }
-
-//   return {
-//     isEditing,
-//     editedTitle,
-//     setEditedTitle,
-//     editedDescription,
-//     setEditedDescription,
-//     handleEdit,
-//     handleSave,
-//     handleCancel,
-//   }
-// }

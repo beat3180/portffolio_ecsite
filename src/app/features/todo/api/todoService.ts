@@ -1,44 +1,60 @@
 import { supabase } from '../../../lib/supabaseClient'
 import type { Todo } from '../types'
 
-// 共通のエラー処理関数
-const handleError = (error: Error | null, action: string) => {
-  if (error) {
-    console.error(`Error ${action} todo:`, error)
-    return true // エラーが発生した場合trueを返す
-  }
-  return false // エラーが発生しなかった場合falseを返す
-}
-
 export const fetchTodos = async (): Promise<{
   data: Todo[]
-  error: Error | null
+  error: unknown
 }> => {
-  const { data, error } = await supabase
-    .from('todos')
-    .select('*')
-    .not('title', 'is', null)
-  return { data: data ?? [], error }
+  try {
+    const { data, error } = await supabase
+      .from('todos')
+      .select('*')
+      .not('title', 'is', null)
+    if (error) {
+      return { data: [], error }
+    }
+    return { data: data ?? [], error: null }
+  } catch (error) {
+    return { data: [], error }
+  }
 }
 
-export const createTodo = async (newTodo: Todo): Promise<Todo | null> => {
-  const { data, error } = await supabase
-    .from('todos')
-    .insert([newTodo])
-    .select()
-  if (handleError(error, 'creating')) return null
-  return data?.[0] ?? null // dataが存在しない場合もnullを返す
+export const createTodo = async (
+  newTodo: Todo,
+): Promise<{ data: Todo | null; error: unknown }> => {
+  try {
+    const { data, error } = await supabase
+      .from('todos')
+      .insert([newTodo])
+      .select()
+
+    return { data: data?.[0] ?? null, error }
+  } catch (error) {
+    return { data: null, error }
+  }
 }
 
-export const updateTodo = async (updatedTodo: Todo): Promise<boolean> => {
-  const { error } = await supabase
-    .from('todos')
-    .update(updatedTodo)
-    .eq('id', updatedTodo.id)
-  return !handleError(error, 'updating') // エラー処理関数の結果を反転
+export const updateTodo = async (
+  updatedTodo: Todo,
+): Promise<{ data: boolean; error: unknown }> => {
+  try {
+    const { error } = await supabase
+      .from('todos')
+      .update(updatedTodo)
+      .eq('id', updatedTodo.id)
+    return { data: !error, error }; // error があれば false、なければ true を返す
+  } catch (error) {
+    return { data: false, error }
+  }
 }
 
-export const deleteTodo = async (id: number): Promise<boolean> => {
-  const { error } = await supabase.from('todos').delete().eq('id', id)
-  return !handleError(error, 'deleting') // エラー処理関数の結果を反転
+export const deleteTodo = async (
+  id: number,
+): Promise<{ data: boolean; error: unknown }> => {
+  try {
+    const { error } = await supabase.from('todos').delete().eq('id', id)
+    return { data: !error, error }
+  } catch (error) {
+    return { data: false, error }
+  }
 }
