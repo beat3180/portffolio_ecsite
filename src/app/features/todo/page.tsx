@@ -16,9 +16,9 @@ export default function TodoPage() {
 
 // todo画面コンポーネント
 function TodoListWrapper() {
-  const { todos } = useTodosContext()
+  const { isLoading } = useTodosContext()
 
-  if (!todos.length) return <Loading />
+  if (isLoading) return <Loading />
 
   return (
     <div>
