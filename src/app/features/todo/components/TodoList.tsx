@@ -1,11 +1,11 @@
 import Button from '../../../components/elements/Button'
 import TodoItem from './TodoItem'
 import { useTodoList } from '../hooks/useTodoList'
+import type { TodoListProps } from '../types'
 
 
-export default function TodoList() {
+export default function TodoList({ todos }: TodoListProps) {
   const {
-    todos,
     newTitle,
     newDescription,
     setNewTitle,
@@ -33,26 +33,27 @@ export default function TodoList() {
         </Button>
       </div>
 
-      <ul className="todo-items">
-        <table>
-          <thead>
-            <tr>
-              <th>完了</th>
-              <th>タイトル</th>
-              <th>詳細</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            {todos.map((todo) => (
-              <TodoItem
-                key={todo.id}
-                todo={todo}
-              />
-            ))}
-          </tbody>
-        </table>
-      </ul>
+      {todos.length > 0 ? (
+        <ul className="todo-items">
+          <table>
+            <thead>
+              <tr>
+                <th>完了</th>
+                <th>タイトル</th>
+                <th>詳細</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {todos.map((todo) => (
+                <TodoItem key={todo.id} todo={todo} />
+              ))}
+            </tbody>
+          </table>
+        </ul>
+      ) : (
+        <p>データがありません</p>
+      )}
     </div>
   )
 }

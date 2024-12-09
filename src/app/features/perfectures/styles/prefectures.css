@@ -1,0 +1,26 @@
+.prefectures-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2em;
+}
+
+.prefecture-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 20px;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.prefecture-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.prefecture-item img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}

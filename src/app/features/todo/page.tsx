@@ -16,14 +16,14 @@ export default function TodoPage() {
 
 // todo画面コンポーネント
 function TodoListWrapper() {
-  const { todos } = useTodosContext()
+  const { todos,isLoading } = useTodosContext()
 
-  if (!todos.length) return <Loading />
+  if (isLoading) return <Loading />
 
   return (
     <div>
       <h1 className="todo-title">Todo List</h1>
-      <TodoList />
+        <TodoList todos={todos} />
     </div>
   )
 }
