@@ -13,6 +13,10 @@ export interface TodosContextProps {
   isLoading: boolean
 }
 
+export interface TodoListProps {
+  todos: Todo[]
+}
+
 export interface TodoItemProps {
   todo: Todo
 }

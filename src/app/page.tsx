@@ -10,7 +10,7 @@ export default function Home() {
           <Link href="/features/todo">
             <Button variant="primary">TodoList</Button>
           </Link>
-          <Link href="/features/todo">
+          <Link href="/features/perfectures">
             <Button variant="primary">都道府県一覧</Button>
           </Link>
         </div>
