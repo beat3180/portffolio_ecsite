@@ -7,7 +7,7 @@ export const useTodoList = () => {
   const { handleError } = useErrorContext()
   const [newTitle, setNewTitle] = useState('')
   const [newDescription, setNewDescription] = useState('')
-  const { todos, setTodos } = useTodosContext()
+  const { setTodos } = useTodosContext()
 
   const handleCreate = async () => {
     if (newTitle.trim() !== '' && newDescription.trim() !== '') {
@@ -36,7 +36,6 @@ export const useTodoList = () => {
   }
 
   return {
-    todos,
     newTitle,
     newDescription,
     setNewTitle,
