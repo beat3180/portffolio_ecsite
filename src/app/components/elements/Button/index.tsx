@@ -1,16 +1,9 @@
-import type { ButtonHTMLAttributes } from 'react'
-import type React from 'react'
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger'
-  children: React.ReactNode
-}
+import type { ButtonProps } from '../../../types'
 
-const Button: React.FC<ButtonProps> = ({
-  variant = 'primary',
-  children,
-  ...rest
-}) => {
+
+
+const Button = ({ variant = 'primary', children, ...rest }: ButtonProps) => {
   let buttonClassName = 'button'
 
   switch (variant) {
