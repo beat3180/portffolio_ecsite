@@ -4,12 +4,17 @@
   font-size: 2em;
 }
 
+.prefecture-wrapper {
+  width: 80%;
+  margin: 0 auto;
+}
+
 .prefecture-list {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 20px;
   justify-content: center;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 }
 

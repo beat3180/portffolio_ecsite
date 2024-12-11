@@ -5,8 +5,6 @@ const PrefectureItem = ({
   prefecture,
 }: PrefectureItemProps) => {
   const imageUrl = prefecture.image_url
-  console.log(imageUrl)
-
 
   return (
     <div className="prefecture-item">
