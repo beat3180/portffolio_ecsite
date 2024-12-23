@@ -6,7 +6,7 @@ export interface Prefecture {
   capital: string
   area: number
   population: number
-  image_url: string | null
+  image_url: string
 }
 
 export interface PrefecturesContextProps {
