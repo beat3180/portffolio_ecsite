@@ -1,3 +1,5 @@
+'use client'
+
 import type React from 'react'
 import {
   createContext,
@@ -21,6 +23,7 @@ export const PrefecturesProvider: React.FC<{ children: React.ReactNode }> = ({
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
+  // 全ての都道府県データを取得
   const fetchPrefectures = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -43,7 +46,12 @@ export const PrefecturesProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <PrefecturesContext.Provider
-      value={{ prefectures, setPrefectures, fetchPrefectures, isLoading }}
+      value={{
+        prefectures,
+        setPrefectures,
+        fetchPrefectures,
+        isLoading,
+      }}
     >
       {children}
     </PrefecturesContext.Provider>
