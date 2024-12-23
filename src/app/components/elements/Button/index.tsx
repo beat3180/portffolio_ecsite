@@ -2,7 +2,6 @@
 import type { ButtonProps } from '../../../types'
 
 
-
 const Button = ({ variant = 'primary', children, ...rest }: ButtonProps) => {
   let buttonClassName = 'button'
 
