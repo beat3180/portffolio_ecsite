@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import type { Prefecture } from '../types'
 import type React from 'react'
+import { PREFECTURE_CSV_HEADERS, PREFECTURE_CSV_FILE_NAME } from '../../../constants/file/prefectures'
+import { downloadCSV } from '../../../lib/helper'
+
 
 const usePrefectureList = (prefectures: Prefecture[]) => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -21,7 +24,26 @@ const usePrefectureList = (prefectures: Prefecture[]) => {
     setSearchTerm(event.target.value)
   }
 
-  return { searchTerm, filteredPrefectures, handleSearchChange }
+  const handleDownloadCSV = () => {
+    // データがない場合、処理を終了
+    if (filteredPrefectures.length === 0) {
+      return
+    }
+
+    downloadCSV(
+      filteredPrefectures,
+      PREFECTURE_CSV_HEADERS,
+      PREFECTURE_CSV_FILE_NAME,
+      'yyyyMMddHHmmss',
+    )
+  }
+
+  return {
+    searchTerm,
+    filteredPrefectures,
+    handleSearchChange,
+    handleDownloadCSV,
+  }
 }
 
 export default usePrefectureList
