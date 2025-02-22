@@ -1,29 +1,20 @@
 'use client'
 
-import { TodosProvider, useTodosContext } from './context/TodosContext'
 import TodoList from './components/TodoList'
 import './styles/todo.css'
 import Loading from '../../components/common/Loading'
-
-// todoデータcontext
-export default function TodoPage() {
-  return (
-    <TodosProvider>
-      <TodoListWrapper />
-    </TodosProvider>
-  )
-}
+import { useTodo } from './hooks/useTodo'
 
 // todo画面コンポーネント
-function TodoListWrapper() {
-  const { todos,isLoading } = useTodosContext()
+export default function TodoPage() {
+  const { todos, setTodos, isLoading } = useTodo()
 
   if (isLoading) return <Loading />
 
   return (
     <div>
       <h1 className="todo-title">Todo List</h1>
-        <TodoList todos={todos} />
+      <TodoList todos={todos} setTodos={setTodos} />
     </div>
   )
 }

@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { useTodosContext } from '../context/TodosContext'
+import { useErrorContext } from '../../../context/ErrorContext'
 import * as todoService from '../api/todoService'
 import type { Todo } from '../types'
-import { useErrorContext } from '../../../context/ErrorContext'
+import type React from 'react'
 
-export const useTodoItem = (initialTodo: Todo) => {
+export const useTodoItem = (
+  initialTodo: Todo,
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
+) => {
   const { handleError } = useErrorContext()
-  const { todos, setTodos } = useTodosContext()
 
   // ローカル状態管理
   const [isEditing, setIsEditing] = useState(false)
@@ -22,8 +24,8 @@ export const useTodoItem = (initialTodo: Todo) => {
       if (success) {
         setTodos((prevTodos) =>
           prevTodos.map((todo) =>
-            todo.id === updatedTodo.id ? updatedTodo : todo
-          )
+            todo.id === updatedTodo.id ? updatedTodo : todo,
+          ),
         )
       } else {
         handleError(new Error('Todoの更新に失敗しました。'), 'Todoの更新')
@@ -73,8 +75,6 @@ export const useTodoItem = (initialTodo: Todo) => {
   }
 
   return {
-    todos,
-    setTodos,
     isEditing,
     editedTitle,
     setEditedTitle,
@@ -83,7 +83,7 @@ export const useTodoItem = (initialTodo: Todo) => {
     handleEdit,
     handleSave,
     handleCancel,
-    handleDelete,
     handleToggleComplete,
+    handleDelete,
   }
 }
