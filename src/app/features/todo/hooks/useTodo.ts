@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useErrorContext } from '../../../context/ErrorContext'
-import * as todoService from '../api/todoService'
 import type { Todo } from '../types'
 
 export const useTodo = () => {
@@ -11,10 +10,10 @@ export const useTodo = () => {
   const fetchTodos = useCallback(async () => {
     setIsLoading(true)
     try {
-      const { data, error } = await todoService.fetchTodos()
-      if (error) {
-        handleError(error, 'Todoの取得')
-        return
+      const response = await fetch('/api/todo')
+      const data = await response.json()
+      if (!response.ok) {
+        return handleError(data.error, 'Todoの取得')
       }
       setTodos(data)
     } catch (error) {

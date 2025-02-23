@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type React from 'react'
 import { useErrorContext } from '../../../context/ErrorContext'
-import * as todoService from '../api/todoService'
 import type { Todo } from '../types'
 
 export const useTodoList = (
@@ -14,21 +13,20 @@ export const useTodoList = (
   const handleCreate = async () => {
     if (newTitle.trim() !== '' && newDescription.trim() !== '') {
       try {
-        const { data: createdTodo, error } = await todoService.createTodo({
-          title: newTitle,
-          description: newDescription,
-          completed: false,
+        const response = await fetch('/api/todo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: newTitle,
+            description: newDescription,
+            completed: false,
+          }),
         })
-
-        if (error) {
-          handleError(error, 'Todoの作成')
-          return
+        const data = await response.json()
+        if (!response.ok) {
+          return handleError(data.error, 'Todoの作成')
         }
-
-        if (createdTodo) {
-          setTodos((prevTodos) => [...prevTodos, createdTodo])
-        }
-
+        setTodos((prevTodos) => [...prevTodos, data])
         setNewTitle('')
         setNewDescription('')
       } catch (error) {
