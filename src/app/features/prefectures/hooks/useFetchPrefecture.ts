@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useErrorContext } from '../../../context/ErrorContext'
-import type { Prefecture } from '../types'
+import type { Prefecture } from '../../../types/prefectures'
 
 export const useFetchPrefecture = (id: number) => {
   const [prefecture, setPrefecture] = useState<Prefecture | null>(null)
@@ -18,7 +18,9 @@ export const useFetchPrefecture = (id: number) => {
         })
         const data = await response.json()
         if (!response.ok) {
-          return handleError(data.error || `ID ${id} の都道府県データの取得に失敗しました。`)
+          return handleError(
+            data.error || `ID ${id} の都道府県データの取得に失敗しました。`,
+          )
         }
         setPrefecture(data ?? null)
       } catch (error) {

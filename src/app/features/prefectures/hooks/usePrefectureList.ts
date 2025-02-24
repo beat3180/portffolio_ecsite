@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
-import type { Prefecture } from '../types'
+import { useEffect, useState } from 'react'
 import type React from 'react'
-import { PREFECTURE_CSV_HEADERS, PREFECTURE_CSV_FILE_NAME } from '../../../config/file/prefectures'
+import {
+  PREFECTURE_CSV_FILE_NAME,
+  PREFECTURE_CSV_HEADERS,
+} from '../../../config/file/prefectures'
 import { downloadCSV } from '../../../lib/helper'
-
+import type { Prefecture } from '../../../types/prefectures'
 
 export default function usePrefectureList(prefectures: Prefecture[]) {
   const [searchTerm, setSearchTerm] = useState('')

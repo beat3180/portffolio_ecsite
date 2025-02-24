@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useErrorContext } from '../../../context/ErrorContext'
-import type { Prefecture } from '../types'
+import type { Prefecture } from '../../../types/prefectures'
 
 export const usePrefecture = () => {
   const { handleError } = useErrorContext()
