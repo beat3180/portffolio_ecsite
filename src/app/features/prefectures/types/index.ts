@@ -1,4 +1,4 @@
-import type React from 'react'
+
 export interface Prefecture {
   id?: number
   name: string
@@ -7,13 +7,6 @@ export interface Prefecture {
   area: number
   population: number
   image_url: string
-}
-
-export interface PrefecturesContextProps {
-  prefectures: Prefecture[]
-  setPrefectures: React.Dispatch<React.SetStateAction<Prefecture[]>>
-  fetchPrefectures: () => Promise<void>
-  isLoading: boolean
 }
 
 export interface PrefectureListProps {

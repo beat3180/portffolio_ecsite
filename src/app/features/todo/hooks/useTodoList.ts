@@ -1,32 +1,32 @@
 import { useState } from 'react'
-import * as todoService from '../api/todoService'
-import { useTodosContext } from '../context/TodosContext'
+import type React from 'react'
 import { useErrorContext } from '../../../context/ErrorContext'
+import type { Todo } from '../types'
 
-export const useTodoList = () => {
+export const useTodoList = (
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
+) => {
   const { handleError } = useErrorContext()
   const [newTitle, setNewTitle] = useState('')
   const [newDescription, setNewDescription] = useState('')
-  const { setTodos } = useTodosContext()
 
   const handleCreate = async () => {
     if (newTitle.trim() !== '' && newDescription.trim() !== '') {
       try {
-      const { data: createdTodo, error } = await todoService.createTodo({
-        title: newTitle,
-        description: newDescription,
-        completed: false,
-      })
-
-      if (error) {
-        handleError(error, 'Todoの作成')
-        return
-      }
-
-      if (createdTodo) {
-        setTodos((prevTodos) => [...prevTodos, createdTodo]) // createdTodo のみを追加
-      }
-
+        const response = await fetch('/api/todo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: newTitle,
+            description: newDescription,
+            completed: false,
+          }),
+        })
+        const data = await response.json()
+        if (!response.ok) {
+          return handleError(data.error, 'Todoの作成')
+        }
+        setTodos((prevTodos) => [...prevTodos, data])
         setNewTitle('')
         setNewDescription('')
       } catch (error) {

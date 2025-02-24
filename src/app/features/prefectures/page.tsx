@@ -1,23 +1,12 @@
 'use client'
 
-import {
-  PrefecturesProvider,
-  usePrefecturesContext,
-} from './context/PrefecturesContext'
 import PrefectureList from './components/PrefectureList'
-import './styles/prefectures.css'
+import '../../styles/prefectures.css'
 import Loading from '../../components/common/Loading'
+import { usePrefecture } from './hooks/usePrefecture'
 
 export default function PrefecturesPage() {
-  return (
-    <PrefecturesProvider>
-      <PrefectureListWrapper />
-    </PrefecturesProvider>
-  )
-}
-
-function PrefectureListWrapper() {
-  const { prefectures, isLoading } = usePrefecturesContext()
+  const { prefectures, isLoading } = usePrefecture()
 
   if (isLoading) return <Loading />
 
