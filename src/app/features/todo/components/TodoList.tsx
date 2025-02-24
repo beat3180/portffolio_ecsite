@@ -1,6 +1,6 @@
 import Button from '../../../components/elements/Button'
+import type { TodoListProps } from '../../../types/todo'
 import { useTodoList } from '../hooks/useTodoList'
-import type { TodoListProps } from '../types'
 import TodoItem from './TodoItem'
 
 export default function TodoList({ todos, setTodos }: TodoListProps) {

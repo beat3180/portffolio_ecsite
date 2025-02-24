@@ -1,5 +1,5 @@
-import type { PrefectureItemProps } from '../types'
 import Link from 'next/link'
+import type { PrefectureItemProps } from '../../../types/prefectures'
 
 export default function PrefectureItem({ prefecture }: PrefectureItemProps) {
   return (
@@ -17,4 +17,4 @@ export default function PrefectureItem({ prefecture }: PrefectureItemProps) {
       <h3>{prefecture.name}</h3>
     </Link>
   )
-};
+}

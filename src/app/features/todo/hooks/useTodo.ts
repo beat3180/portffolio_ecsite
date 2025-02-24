@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useErrorContext } from '../../../context/ErrorContext'
-import type { Todo } from '../types'
+import type { Todo } from '../../../types/todo'
 
 export const useTodo = () => {
   const { handleError } = useErrorContext()
