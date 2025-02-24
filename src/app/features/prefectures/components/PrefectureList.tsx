@@ -1,8 +1,8 @@
-import type { PrefectureListProps } from '../types'
-import PrefectureItem from './PrefectureItem'
-import TextField from '../../../components/elements/TextField'
-import usePrefectureList from '../hooks/usePrefectureList'
 import Button from '../../../components/elements/Button'
+import TextField from '../../../components/elements/TextField'
+import type { PrefectureListProps } from '../../../types/prefectures'
+import usePrefectureList from '../hooks/usePrefectureList'
+import PrefectureItem from './PrefectureItem'
 
 export default function PrefectureList({ prefectures }: PrefectureListProps) {
   const {

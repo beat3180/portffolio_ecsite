@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabase } from '../../lib/supabaseClient'
-import type { Prefecture } from '../../features/prefectures/types'
+import type { Prefecture } from '../../types/prefectures'
 
 // 画像URLを取得する関数
 async function getImageUrl(prefecture: Prefecture) {

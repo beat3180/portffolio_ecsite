@@ -1,8 +1,8 @@
 import Button from '../../../components/elements/Button'
+import type { TodoItemProps } from '../../../types/todo'
 import { useTodoItem } from '../hooks/useTodoItem'
-import type { TodoItemProps } from '../types'
 
-export default function TodoItem({ todo, setTodos }: TodoItemProps)  {
+export default function TodoItem({ todo, setTodos }: TodoItemProps) {
   const {
     isEditing,
     editedTitle,
