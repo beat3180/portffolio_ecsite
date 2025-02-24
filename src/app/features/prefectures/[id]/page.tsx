@@ -2,7 +2,7 @@
 
 import { useFetchPrefecture } from '../hooks/useFetchPrefecture'
 import Loading from '../../../components/common/Loading'
-import '../styles/prefectureDetail.css'
+import '../../../styles/prefectureDetail.css'
 
 
 export default function PrefecturePage({ params }: { params: { id: string } }) {

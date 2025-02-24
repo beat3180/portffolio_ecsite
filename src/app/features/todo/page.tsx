@@ -1,7 +1,7 @@
 'use client'
 
 import TodoList from './components/TodoList'
-import './styles/todo.css'
+import '../../styles/todo.css'
 import { useTodo } from './hooks/useTodo'
 
 // todo画面コンポーネント
