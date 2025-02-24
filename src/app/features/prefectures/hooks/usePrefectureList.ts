@@ -5,7 +5,7 @@ import { PREFECTURE_CSV_HEADERS, PREFECTURE_CSV_FILE_NAME } from '../../../const
 import { downloadCSV } from '../../../lib/helper'
 
 
-const usePrefectureList = (prefectures: Prefecture[]) => {
+export default function usePrefectureList(prefectures: Prefecture[]) {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredPrefectures, setFilteredPrefectures] =
     useState<Prefecture[]>(prefectures)
@@ -45,5 +45,3 @@ const usePrefectureList = (prefectures: Prefecture[]) => {
     handleDownloadCSV,
   }
 }
-
-export default usePrefectureList

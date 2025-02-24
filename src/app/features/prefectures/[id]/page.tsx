@@ -1,9 +1,8 @@
 'use client'
 
-import { useFetchPrefecture } from '../hooks/useFetchPrefecture'
 import Loading from '../../../components/common/Loading'
+import { useFetchPrefecture } from '../hooks/useFetchPrefecture'
 import '../../../styles/prefectureDetail.css'
-
 
 export default function PrefecturePage({ params }: { params: { id: string } }) {
   const { prefecture, isLoading } = useFetchPrefecture(Number(params.id))

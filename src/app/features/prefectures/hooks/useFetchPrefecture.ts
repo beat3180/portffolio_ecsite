@@ -1,8 +1,6 @@
-import * as prefectureService from '../api/prefectureService'
-import type { Prefecture } from '../types'
 import { useEffect, useState } from 'react'
 import { useErrorContext } from '../../../context/ErrorContext'
-
+import type { Prefecture } from '../types'
 
 export const useFetchPrefecture = (id: number) => {
   const [prefecture, setPrefecture] = useState<Prefecture | null>(null)
@@ -13,10 +11,14 @@ export const useFetchPrefecture = (id: number) => {
     const fetchPrefecture = async () => {
       setIsLoading(true)
       try {
-        const { data, error } = await prefectureService.fetchPrefectureById(id)
-        if (error) {
-          handleError(error, `ID ${id} の都道府県データの取得`)
-          return
+        const response = await fetch('/api/prefectures', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id }),
+        })
+        const data = await response.json()
+        if (!response.ok) {
+          return handleError(data.error || `ID ${id} の都道府県データの取得に失敗しました。`)
         }
         setPrefecture(data ?? null)
       } catch (error) {
@@ -28,7 +30,6 @@ export const useFetchPrefecture = (id: number) => {
 
     fetchPrefecture()
   }, [id, handleError])
-
 
   return { isLoading, prefecture }
 }

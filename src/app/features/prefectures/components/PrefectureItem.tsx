@@ -1,7 +1,7 @@
 import type { PrefectureItemProps } from '../types'
 import Link from 'next/link'
 
-const PrefectureItem = ({ prefecture }: PrefectureItemProps) => {
+export default function PrefectureItem({ prefecture }: PrefectureItemProps) {
   return (
     <Link
       href={`/features/prefectures/${prefecture.id}`}
@@ -18,6 +18,3 @@ const PrefectureItem = ({ prefecture }: PrefectureItemProps) => {
     </Link>
   )
 };
-
-
-export default PrefectureItem

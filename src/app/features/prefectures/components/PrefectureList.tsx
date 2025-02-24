@@ -4,7 +4,7 @@ import TextField from '../../../components/elements/TextField'
 import usePrefectureList from '../hooks/usePrefectureList'
 import Button from '../../../components/elements/Button'
 
-const PrefectureList = ({ prefectures }: PrefectureListProps) => {
+export default function PrefectureList({ prefectures }: PrefectureListProps) {
   const {
     searchTerm,
     filteredPrefectures,
@@ -34,5 +34,3 @@ const PrefectureList = ({ prefectures }: PrefectureListProps) => {
     </div>
   )
 }
-
-export default PrefectureList
