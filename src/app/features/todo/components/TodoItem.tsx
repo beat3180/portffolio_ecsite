@@ -1,9 +1,8 @@
-import type { FC } from 'react'
 import Button from '../../../components/elements/Button'
-import type { TodoItemProps } from '../types'
 import { useTodoItem } from '../hooks/useTodoItem'
+import type { TodoItemProps } from '../types'
 
-const TodoItem: FC<TodoItemProps> = ({ todo }) => {
+export default function TodoItem({ todo, setTodos }: TodoItemProps)  {
   const {
     isEditing,
     editedTitle,
@@ -15,7 +14,7 @@ const TodoItem: FC<TodoItemProps> = ({ todo }) => {
     handleCancel,
     handleToggleComplete,
     handleDelete,
-  } = useTodoItem(todo)
+  } = useTodoItem(todo, setTodos)
 
   return (
     <tr className={`todo-item ${todo.completed ? 'completed' : ''}`}>
@@ -75,5 +74,3 @@ const TodoItem: FC<TodoItemProps> = ({ todo }) => {
     </tr>
   )
 }
-
-export default TodoItem

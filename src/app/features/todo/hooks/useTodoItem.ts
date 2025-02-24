@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { useTodosContext } from '../context/TodosContext'
-import * as todoService from '../api/todoService'
-import type { Todo } from '../types'
+import type React from 'react'
 import { useErrorContext } from '../../../context/ErrorContext'
+import type { Todo } from '../types'
 
-export const useTodoItem = (initialTodo: Todo) => {
+export const useTodoItem = (
+  initialTodo: Todo,
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
+) => {
   const { handleError } = useErrorContext()
-  const { todos, setTodos } = useTodosContext()
 
   // ローカル状態管理
   const [isEditing, setIsEditing] = useState(false)
@@ -18,16 +19,20 @@ export const useTodoItem = (initialTodo: Todo) => {
   // 更新処理
   const handleUpdate = async (updatedTodo: Todo) => {
     try {
-      const success = await todoService.updateTodo(updatedTodo)
-      if (success) {
-        setTodos((prevTodos) =>
-          prevTodos.map((todo) =>
-            todo.id === updatedTodo.id ? updatedTodo : todo
-          )
-        )
-      } else {
-        handleError(new Error('Todoの更新に失敗しました。'), 'Todoの更新')
+      const response = await fetch('/api/todo', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedTodo),
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        return handleError(data.error, 'Todoの更新')
       }
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) =>
+          todo.id === updatedTodo.id ? updatedTodo : todo,
+        ),
+      )
     } catch (error) {
       handleError(error, 'Todoの更新')
     }
@@ -36,12 +41,16 @@ export const useTodoItem = (initialTodo: Todo) => {
   // 削除処理
   const handleDelete = async (id: number) => {
     try {
-      const success = await todoService.deleteTodo(id)
-      if (success) {
-        setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
-      } else {
-        handleError(new Error('Todoの削除に失敗しました。'), 'Todoの削除')
+      const response = await fetch('/api/todo', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        return handleError(data.error, 'Todoの削除')
       }
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
     } catch (error) {
       handleError(error, 'Todoの削除')
     }
@@ -73,8 +82,6 @@ export const useTodoItem = (initialTodo: Todo) => {
   }
 
   return {
-    todos,
-    setTodos,
     isEditing,
     editedTitle,
     setEditedTitle,
@@ -83,7 +90,7 @@ export const useTodoItem = (initialTodo: Todo) => {
     handleEdit,
     handleSave,
     handleCancel,
-    handleDelete,
     handleToggleComplete,
+    handleDelete,
   }
 }

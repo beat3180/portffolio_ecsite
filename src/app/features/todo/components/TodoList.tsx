@@ -1,17 +1,16 @@
 import Button from '../../../components/elements/Button'
-import TodoItem from './TodoItem'
 import { useTodoList } from '../hooks/useTodoList'
 import type { TodoListProps } from '../types'
+import TodoItem from './TodoItem'
 
-
-export default function TodoList({ todos }: TodoListProps) {
+export default function TodoList({ todos, setTodos }: TodoListProps) {
   const {
     newTitle,
     newDescription,
     setNewTitle,
     setNewDescription,
     handleCreate,
-  } = useTodoList()
+  } = useTodoList(setTodos)
 
   return (
     <div className="todo-list-container">
@@ -46,7 +45,7 @@ export default function TodoList({ todos }: TodoListProps) {
             </thead>
             <tbody>
               {todos.map((todo) => (
-                <TodoItem key={todo.id} todo={todo} />
+                <TodoItem key={todo.id} todo={todo} setTodos={setTodos} />
               ))}
             </tbody>
           </table>
