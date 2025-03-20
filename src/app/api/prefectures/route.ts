@@ -34,10 +34,12 @@ export async function GET() {
   }
 
   const prefecturesData = await Promise.all(
-    (data ?? []).map(async (prefecture) => {
-      const imageUrl = await getImageUrl(prefecture)
-      return { ...prefecture, image_url: imageUrl }
-    }),
+    (data ?? [])
+      .sort((a, b) => a.id - b.id)
+      .map(async (prefecture) => {
+        const imageUrl = await getImageUrl(prefecture)
+        return { ...prefecture, image_url: imageUrl }
+      }),
   )
 
   return NextResponse.json(prefecturesData)
@@ -59,4 +61,20 @@ export async function POST(request: Request) {
   const imageUrl = await getImageUrl(data)
 
   return NextResponse.json({ ...data, image_url: imageUrl })
+}
+
+export async function PUT(request: Request) {
+  const updatedPrefecture = await request.json()
+  const { id, name, region, capital, area, population } = updatedPrefecture
+
+  const { error } = await supabase
+    .from('prefectures')
+    .update({ name, region, capital, area, population })
+    .eq('id', id)
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  return NextResponse.json({ success: true })
 }
