@@ -76,3 +76,16 @@ body {
 .button-danger:hover {
   background-color: #cc0000;
 }
+
+/* file input */
+.file-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.file-input:hover {
+  border-color: #0070f3;
+}

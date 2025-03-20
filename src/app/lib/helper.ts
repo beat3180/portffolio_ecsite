@@ -1,5 +1,3 @@
-
-
 // データをCSVとしてダウンロード
 const downloadCSV = (
   data: unknown[],
@@ -64,6 +62,37 @@ const formatDate = (
 
   return formattedDate
 }
+// CSVパース関数
+const parseCSV = <T>(csvText: string, keys: (keyof T)[]): T[] => {
+  const lines = csvText
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+  const result: T[] = []
 
+  for (let i = 1; i < lines.length; i++) {
+    const values = lines[i].split(',').map((value) => value.trim())
+    const item: T = {} as T // T型のオブジェクトを初期化
 
-export { downloadCSV, formatDate }
+    keys.forEach((key, index) => {
+      const value = values[index]
+        ? values[index].replace(/"/g, '').trim()
+        : undefined
+
+      // 型がnumberのものはNumber型にキャスト
+      if (key === 'id' || key === 'area' || key === 'population') {
+        item[key] = (
+          value !== undefined ? Number(value) : undefined
+        ) as T[keyof T] // 型アサーションを追加
+      } else {
+        item[key] = value as T[keyof T] // 型アサーションを追加
+      }
+    })
+
+    result.push(item)
+  }
+
+  return result
+}
+
+export { downloadCSV, formatDate, parseCSV }

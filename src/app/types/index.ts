@@ -15,3 +15,8 @@ export interface TextFieldProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
 }
+
+export interface FileInputProps {
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  accept?: string
+}
