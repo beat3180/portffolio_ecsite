@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
-import { ErrorProvider } from './context/ErrorContext'
-import Header from './components/layout/Header'
 import { ToastContainer } from 'react-toastify'
+import Header from './components/layout/Header'
+import { ErrorProvider } from './context/ErrorContext'
 import './styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
-
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,7 +21,7 @@ export default function RootLayout({
       <body>
         <ErrorProvider>
           <Header />
-          {children}
+            {children}
           <ToastContainer />
         </ErrorProvider>
       </body>
