@@ -1,3 +1,4 @@
+import type React from 'react'
 
 export interface Prefecture {
   id?: number
@@ -11,6 +12,7 @@ export interface Prefecture {
 
 export interface PrefectureListProps {
   prefectures: Prefecture[]
+  setPrefectures: React.Dispatch<React.SetStateAction<Prefecture[]>>
 }
 
 export interface PrefectureItemProps {

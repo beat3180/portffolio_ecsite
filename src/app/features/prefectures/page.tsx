@@ -6,7 +6,7 @@ import Loading from '../../components/common/Loading'
 import { usePrefecture } from './hooks/usePrefecture'
 
 export default function PrefecturesPage() {
-  const { prefectures, isLoading } = usePrefecture()
+  const { prefectures, setPrefectures, isLoading } = usePrefecture()
 
   if (isLoading) return <Loading />
 
@@ -14,7 +14,10 @@ export default function PrefecturesPage() {
     <div>
       <h1 className="prefectures-title">都道府県一覧</h1>
       {prefectures.length > 0 ? (
-        <PrefectureList prefectures={prefectures} />
+        <PrefectureList
+          prefectures={prefectures}
+          setPrefectures={setPrefectures}
+        />
       ) : (
         <p>データがありません。</p>
       )}
