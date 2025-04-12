@@ -6,7 +6,10 @@ import type { PrefectureListProps } from '../../../types/prefectures'
 import usePrefectureList from '../hooks/usePrefectureList'
 import PrefectureItem from './PrefectureItem'
 
-export default function PrefectureList({ prefectures }: PrefectureListProps) {
+export default function PrefectureList({
+  prefectures,
+  setPrefectures
+}: PrefectureListProps) {
   const {
     searchTerm,
     filteredPrefectures,
@@ -15,7 +18,7 @@ export default function PrefectureList({ prefectures }: PrefectureListProps) {
     handleFileChange,
     updatePrefectures,
     isLoading,
-  } = usePrefectureList(prefectures)
+  } = usePrefectureList(prefectures, setPrefectures)
 
   if (isLoading) return <Loading />
 
@@ -25,10 +28,7 @@ export default function PrefectureList({ prefectures }: PrefectureListProps) {
         <div className="flex justify-between w-full mb-4 gap-4">
           <div className="flex gap-4">
             <FileInput onChange={handleFileChange} accept=".csv" />
-            <Button
-              variant="primary"
-              onClick={updatePrefectures}
-            >
+            <Button variant="primary" onClick={updatePrefectures}>
               更新
             </Button>
           </div>
