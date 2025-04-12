@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import type React from 'react'
 import {
   PREFECTURE_CSV_FILE_NAME,
@@ -9,22 +9,20 @@ import { useErrorContext } from '../../../context/ErrorContext'
 import { downloadCSV, parseCSV } from '../../../lib/helper'
 import type { Prefecture } from '../../../types/prefectures'
 
-export default function usePrefectureList(prefectures: Prefecture[]) {
+export default function usePrefectureList(prefectures: Prefecture[],
+  setPrefectures: React.Dispatch<React.SetStateAction<Prefecture[]>>
+) {
   const { handleError } = useErrorContext()
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredPrefectures, setFilteredPrefectures] =
-    useState<Prefecture[]>(prefectures)
-  const [parsedData, setParsedData] = useState<Prefecture[]>([])
+  const [csvData, setCsvData] = useState<Prefecture[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    const results = prefectures.filter(
-      (prefecture) =>
-        prefecture.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        prefecture.region.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        prefecture.capital.toLowerCase().includes(searchTerm.toLowerCase()),
+  const filteredPrefectures = useMemo(() => {
+    return prefectures.filter((prefecture) =>
+      [prefecture.name, prefecture.region, prefecture.capital].some((field) =>
+        field.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
     )
-    setFilteredPrefectures(results)
   }, [prefectures, searchTerm])
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,14 +50,14 @@ export default function usePrefectureList(prefectures: Prefecture[]) {
     const reader = new FileReader()
     reader.onload = (e) => {
       const text = e.target?.result as string
-      const updatedData = parseCSV<Prefecture>(text, PREFECTURE_KEY_NAME)
-      setParsedData(updatedData)
+      const parsed = parseCSV<Prefecture>(text, PREFECTURE_KEY_NAME)
+      setCsvData(parsed)
     }
     reader.readAsText(file)
   }
 
   const updatePrefectures = async () => {
-    if (parsedData.length === 0) {
+    if (csvData.length === 0) {
       handleError('更新するデータがありません。')
       return
     }
@@ -67,57 +65,48 @@ export default function usePrefectureList(prefectures: Prefecture[]) {
     setIsLoading(true)
     const updatedPrefectures: Prefecture[] = [] // 更新された都道府県を格納する配列
 
-    for (const updatedPrefecture of parsedData) {
-      const originalPrefecture = prefectures.find(
-        (p) =>
-          updatedPrefecture.id !== undefined && p.id === updatedPrefecture.id,
-      )
-
-      if (!originalPrefecture) {
+    for (const updated of csvData) {
+      const original = prefectures.find((p) => p.id === updated.id)
+      if (!original) {
         console.warn(
-          `ID ${updatedPrefecture.id} に一致する都道府県が見つかりませんでした。`,
+          `ID ${updated.id} に一致する都道府県が見つかりませんでした。`,
         )
-        continue // 一致しない場合は次のループへ
+        continue
       }
 
       const hasChanges =
-        originalPrefecture.name !== updatedPrefecture.name ||
-        originalPrefecture.region !== updatedPrefecture.region ||
-        originalPrefecture.capital !== updatedPrefecture.capital ||
-        originalPrefecture.area !== updatedPrefecture.area ||
-        originalPrefecture.population !== updatedPrefecture.population
+        original.name !== updated.name ||
+        original.region !== updated.region ||
+        original.capital !== updated.capital ||
+        original.area !== updated.area ||
+        original.population !== updated.population
 
-      if (hasChanges) {
-        try {
-          const response = await fetch('/api/prefectures', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedPrefecture),
-          })
-          const data = await response.json()
-          console.log('APIレスポンス:', data)
-          if (!response.ok) {
-            handleError(data.error, '都道府県データの更新')
-          } else {
-            // image_urlはoriginalPrefectureから取得
-            updatedPrefectures.push({
-              ...updatedPrefecture,
-              image_url: originalPrefecture.image_url, // image_urlを保持
-            })
-          }
-        } catch (error) {
-          handleError(error, '都道府県データの更新')
+      if (!hasChanges) continue
+
+      try {
+        const response = await fetch('/api/prefectures', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated),
+        })
+        const data = await response.json()
+        if (!response.ok) {
+          handleError(data.error, '都道府県データの更新')
+        } else {
+          updatedPrefectures.push({ ...updated, image_url: original.image_url })
         }
+      } catch (error) {
+        handleError(error, '都道府県データの更新')
       }
     }
 
-    // 更新された都道府県をfilteredPrefecturesに設定
-    setFilteredPrefectures((prev) => {
-      return prev.map((prefecture) => {
-        const updated = updatedPrefectures.find((p) => p.id === prefecture.id)
-        return updated ? updated : prefecture // 更新されたものを返す
-      })
-    })
+    if (updatedPrefectures.length > 0) {
+      setPrefectures((prev) =>
+        prev.map(
+          (pref) => updatedPrefectures.find((u) => u.id === pref.id) || pref,
+        ),
+      )
+    }
 
     setIsLoading(false)
   }
