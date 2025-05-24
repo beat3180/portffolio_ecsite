@@ -63,6 +63,7 @@ export async function POST(request: Request) {
   return NextResponse.json({ ...data, image_url: imageUrl })
 }
 
+// 都道府県データを更新
 export async function PUT(request: Request) {
   const updatedPrefecture = await request.json()
   const { id, name, region, capital, area, population } = updatedPrefecture
