@@ -82,6 +82,11 @@ const formatDate = (
 // ========================
 // CSV文字列 → オブジェクト配列へ変換
 // ========================
+
+/**
+ * 各フィールドに対して適用されるパーサー関数のマッピング型
+ * - 任意で指定でき、文字列を適切な型（数値・日付など）に変換できる
+ */
 export type ParserMap<T> = Partial<
   Record<keyof T, (value: string) => T[keyof T]>
 >
@@ -91,6 +96,7 @@ const parseCSV = <T>(
   keys: (keyof T)[],
   parserMap: ParserMap<T> = {},
 ): T[] => {
+  // 改行でCSVを行単位に分割し、空行を除去（前後の空白も除去）
   const lines = csvText
     .split('\n')
     .map((line) => line.trim())
@@ -98,14 +104,21 @@ const parseCSV = <T>(
 
   const result: T[] = []
 
+  // 1行目はヘッダーとしてスキップ（i=1から開始）
   for (let i = 1; i < lines.length; i++) {
+    // 行をカンマ区切りで分割（簡易実装、カンマ内クォート未対応）
     const values = lines[i].split(',').map((value) => value.trim())
+    // 空のオブジェクトを初期化
     const item: T = {} as T
 
+    // 各カラム（key）に対応する値を取り出し、必要に応じてパース
     keys.forEach((key, index) => {
+      // クォートを除去し、前後の空白を削除
       const rawValue = values[index]?.replace(/"/g, '').trim()
+      // 値が存在しない場合はスキップ
       if (rawValue === undefined) return
 
+      // パーサー関数があれば適用、なければ文字列のまま格納
       const parser = parserMap[key]
       item[key] = parser ? parser(rawValue) : (rawValue as T[keyof T])
     })
