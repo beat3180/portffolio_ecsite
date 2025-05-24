@@ -1,8 +1,8 @@
 // ========================
 // CSV ダウンロード関数
 // ========================
-const downloadCSV = (
-  data: unknown[],
+const downloadCSV = <T>(
+  data: T[],
   headers: string[],
   fileName: string,
   dateFormat = 'yyyyMMddHHmmss',
