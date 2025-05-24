@@ -36,7 +36,7 @@ export default function usePrefectureList(prefectures: Prefecture[],
       return
     }
 
-    downloadCSV(
+    downloadCSV<Prefecture>(
       filteredPrefectures,
       PREFECTURE_CSV_HEADERS,
       PREFECTURE_CSV_FILE_NAME,
