@@ -7,6 +7,7 @@ import {
 } from '../../../config/file/prefectures'
 import { useErrorContext } from '../../../context/ErrorContext'
 import { downloadCSV, parseCSV } from '../../../lib/helper'
+import type { ParserMap } from '../../../lib/helper'
 import type { Prefecture } from '../../../types/prefectures'
 
 export default function usePrefectureList(prefectures: Prefecture[],
@@ -50,7 +51,14 @@ export default function usePrefectureList(prefectures: Prefecture[],
     const reader = new FileReader()
     reader.onload = (e) => {
       const text = e.target?.result as string
-      const parsed = parseCSV<Prefecture>(text, PREFECTURE_KEY_NAME)
+
+      const parserMap: ParserMap<Prefecture> = {
+        id: (v) => Number(v),
+        area: (v) => Number(v),
+        population: (v) => Number(v)
+      }
+
+      const parsed = parseCSV<Prefecture>(text, PREFECTURE_KEY_NAME, parserMap)
       setCsvData(parsed)
     }
     reader.readAsText(file)

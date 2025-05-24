@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { supabase } from '../../lib/supabaseClient'
 
+// todoを取得
 export async function GET() {
   const { data, error } = await supabase
     .from('todos')
@@ -12,6 +13,7 @@ export async function GET() {
   return NextResponse.json(data)
 }
 
+// todoを追加
 export async function POST(request: Request) {
   const newTodo = await request.json()
   const { data, error } = await supabase
@@ -24,6 +26,7 @@ export async function POST(request: Request) {
   return NextResponse.json(data[0])
 }
 
+// todoを更新
 export async function PUT(request: Request) {
   const updatedTodo = await request.json()
   const { error } = await supabase
@@ -36,6 +39,7 @@ export async function PUT(request: Request) {
   return NextResponse.json({ success: true })
 }
 
+// todoを削除
 export async function DELETE(request: Request) {
   const { id } = await request.json()
   const { error } = await supabase.from('todos').delete().eq('id', id)
