@@ -10,12 +10,15 @@ const ErrorContext = createContext<ErrorContextProps | undefined>(undefined)
 
 export const ErrorProvider = ({ children }: { children: ReactNode }) => {
 
-  const handleError = (error: unknown, action?: string) => {
+  const handleError: ErrorContextProps['handleError'] = (error, action) => {
     if (error) {
-      const errorMessage = action
-        ? `${action}中にエラーが発生しました。`
-        : 'エラーが発生しました。'
-      const details = error instanceof Error ? error.message : typeof error === 'string' ? error : '不明なエラー'
+      const errorMessage = `${action ?? ''}中にエラーが発生しました。`
+      const details =
+        error instanceof Error
+          ? error.message
+          : typeof error === 'string'
+            ? error
+            : '不明なエラー'
 
       toast.error(`${errorMessage} 詳細: ${details}`)
       console.error(error)
