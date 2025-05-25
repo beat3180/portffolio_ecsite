@@ -10,9 +10,9 @@ import { downloadCSV, parseCSV } from '../../../lib/helper'
 import type { ParserMap } from '../../../lib/helper'
 import type { Prefecture } from '../../../types/prefectures'
 
-export default function usePrefectureList(prefectures: Prefecture[],
+export const usePrefectureList = (prefectures: Prefecture[],
   setPrefectures: React.Dispatch<React.SetStateAction<Prefecture[]>>
-) {
+) => {
   const { handleError } = useErrorContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [csvData, setCsvData] = useState<Prefecture[]>([])
