@@ -3,7 +3,7 @@ import Button from '../../../components/elements/Button'
 import FileInput from '../../../components/elements/FileInput'
 import TextField from '../../../components/elements/TextField'
 import type { PrefectureListProps } from '../../../types/prefectures'
-import usePrefectureList from '../hooks/usePrefectureList'
+import { usePrefectureList }from '../hooks/usePrefectureList'
 import PrefectureItem from './PrefectureItem'
 
 export default function PrefectureList({

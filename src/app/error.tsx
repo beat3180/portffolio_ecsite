@@ -2,15 +2,13 @@
 'use client'
 
 import { useEffect } from 'react'
+import type { ErrorComponent } from 'next/dist/client/components/error-boundary'
 import Button from './components/elements/Button'
 import './styles/error.css'
 
-export default function ErrorBoundary({
-  error,
-  reset,
-}: { error: Error; reset: () => void }) {
+const ErrorBoundary: ErrorComponent = ({ error, reset }) => {
   useEffect(() => {
-    // ログ送信など
+     // ログ送信など
     console.error(error)
   }, [error])
 
@@ -24,3 +22,5 @@ export default function ErrorBoundary({
     </div>
   )
 }
+
+export default ErrorBoundary
